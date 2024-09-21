@@ -1,12 +1,17 @@
-// zig 0.14.0-dev.1511+54b668f8a
+// zig 0.14.0-dev.1511+54b668f8a (2024-09-12)
 // zig build-exe uuidv7.zig  -O ReleaseSmall -femit-bin=uuidv7
+// Copyright 2024 (c) AJ ONeal
+// Licensed under the MPL-2.0
 
 const std = @import("std");
+const builtin = @import("builtin");
 
 pub fn main() !void {
     const stdout = std.io.getStdOut().writer();
 
-    const uuid7 = try generateUUIDv7(std.posix.getrandom);
+    const getrandom = if (builtin.os.tag == .windows) std.os.windows.RtlGenRandom else std.posix.getrandom;
+
+    const uuid7 = try generateUUIDv7(getrandom);
     const uuid7str = try uuidToString(uuid7);
     try stdout.print("{s}\n", .{uuid7str});
 }
@@ -58,9 +63,8 @@ fn generateUUIDv7(getrandom: anytype) !UUID {
 }
 
 fn uuidToString(uuid: UUID) ![]const u8 {
-    var buffer: [128]u8 = undefined;
+    var buffer: [36]u8 = undefined;
     // time_h32-t_16-verh-varh-rand03rand04
     // 019212d3-87f4-7d25-902e-b8d39fe07f08
-    // 70000192-12d3-2252-4dc7-3ca1786320db3172
     return std.fmt.bufPrint(&buffer, "{x:08}-{x}-{x}-{x:04}-{x:04}{x:08}", .{ uuid.time_high, uuid.time_low, uuid.version_random1, uuid.variant_random2, uuid.random3, uuid.random4 });
 }

@@ -1,5 +1,5 @@
-// zig 0.14.0-dev.1511+54b668f8a (2024-09-12)
-// zig build-exe uuidv7.zig  -O ReleaseSmall -femit-bin=uuidv7
+// Bulids with zig 0.13.0 (and 0.14.0 previews)
+//     zig build-exe uuidv7.zig  -O ReleaseSmall -femit-bin=uuidv7
 // Copyright 2024 (c) AJ ONeal
 // Licensed under the MPL-2.0
 

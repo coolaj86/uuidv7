@@ -76,9 +76,29 @@ x86_64-windows-gnu"
 # ERROR: csky-linux-gnueabihf
 # ERROR: csky-linux-gnueabi
 
+rm -rf ./dist/
 for b_target in ${b_libc_targets}; do
     echo >&2 "${b_target}"
-    zig build-exe ./uuidv7.zig -O ReleaseSmall -target "${b_target}" -femit-bin="uuidv7-${b_target}"
+
+    mkdir -p ./dist/"${b_target}"
+    zig build-exe ./uuidv7.zig -O ReleaseSmall \
+        -target "${b_target}" -femit-bin=./dist/"${b_target}"/uuidv7
+
+    if echo "${b_target}" | grep -q 'windows'; then
+        (
+            cd ./dist/"${b_target}" || exit 1
+            mv ./uuidv7 ./uuidv7.exe
+            zip ../uuidv7-v1.0.0-"${b_target}".zip ./uuidv7.exe > /dev/null
+        )
+        echo >&2 "./uuidv7.exe => ./dist/uuidv7-v1.0.0-${b_target}.zip"
+    else
+        (
+            cd ./dist/"${b_target}" || exit 1
+            tar czf ../uuidv7-v1.0.0-"${b_target}".tar.gz ./uuidv7
+            echo >&2 "./uuidv7 => /dist/uuidv7-v1.0.0-${b_target}.tar.gz"
+        )
+    fi
+    echo ''
 done
 
 # these non-libc targets require a libc to link against

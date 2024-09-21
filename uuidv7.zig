@@ -4,67 +4,56 @@
 // Licensed under the MPL-2.0
 
 const std = @import("std");
-const builtin = @import("builtin");
 
 pub fn main() !void {
     const stdout = std.io.getStdOut().writer();
-
-    const getrandom = if (builtin.os.tag == .windows) std.os.windows.RtlGenRandom else std.posix.getrandom;
-
-    const uuid7 = try generateUUIDv7(getrandom);
-    const uuid7str = try uuidToString(uuid7);
+    const uuid7 = try UUID7.generate();
+    const uuid7str = try uuid7.toString();
     try stdout.print("{s}\n", .{uuid7str});
 }
 
-pub const UUID = struct {
-    time_high: u32,
-    time_low: u16,
-    version_random1: u16,
-    variant_random2: u16,
-    random3: u16,
-    random4: u32,
+pub const UUID7 = packed struct {
+    // 48 bit big-endian unsigned number of Unix epoch timestamp as per Section 6.1.
+    unix_ts_ms: u48,
+
+    // 4 bit UUIDv7 version set as per Section 4
+    ver: u4 = 7,
+
+    // 12 bits pseudo-random data to provide uniqueness as per Section 6.2 and Section 6.6.
+    rand_a: u12,
+
+    // The 2 bit variant defined by Section 4.
+    @"var": u2 = 2,
+
+    // The final 62 bits of pseudo-random data to provide uniqueness as per Section 6.2 and Section 6.6.
+    rand_b: u62,
+
+    fn toString(self: @This()) ![36]u8 {
+        // time_h32-t_16-verh-varh-rand03rand04
+        // 019212d3-87f4-7d25-902e-b8d39fe07f08
+        const hex = std.fmt.hex(@as(u128, @bitCast(self)));
+        var buffer: [36]u8 = undefined;
+
+        _ = try std.fmt.bufPrint(&buffer, "{s}-{s}-{s}-{s}-{s}", .{
+            hex[0..][0..8].*,
+            hex[8..][0..4].*,
+            hex[12..][0..4].*,
+            hex[16..][0..4].*,
+            hex[20..][0..12].*,
+        });
+
+        return buffer;
+    }
+
+    fn generate() !@This() {
+        // Get the current Unix timestamp in milliseconds
+        var random_bytes: [10]u8 = undefined;
+        try std.posix.getrandom(&random_bytes);
+
+        return .{
+            .unix_ts_ms = std.mem.nativeToBig(u48, @truncate(@as(u64, @intCast(std.time.milliTimestamp())))),
+            .rand_a = @truncate(@as(u16, @bitCast(random_bytes[0..2].*))),
+            .rand_b = @truncate(@as(u64, @bitCast(random_bytes[2..10].*))),
+        };
+    }
 };
-
-fn generateUUIDv7(getrandom: anytype) !UUID {
-    // Get the current Unix timestamp in milliseconds
-    const inow = std.time.milliTimestamp();
-    const now: u64 = @intCast(inow); // we use 48 bits
-
-    const time_low: u16 = @truncate(now);
-    const time_high: u32 = @truncate(now >> 16);
-
-    const version = (0b111 << 12); // 0b111 is the 7 in UUIDv7
-    const version_mask = 0x0FFF;
-
-    const variant = (0b10 << 14); // 0b10 is the endianness-indicating variant
-    const variant_mask = 0b0011111111111111;
-
-    var random_bytes: [10]u8 = undefined;
-    try getrandom(&random_bytes);
-
-    const version_random1: u16 = (((@as(u16, random_bytes[0]) << 8) | @as(u16, random_bytes[1])) &
-        version_mask) | version;
-    const variant_random2: u16 = ((((@as(u16, random_bytes[2]) << 8) | @as(u16, random_bytes[3])) &
-        variant_mask)) | variant;
-    const random3: u16 = (@as(u16, random_bytes[4]) << 8) | @as(u16, random_bytes[5]);
-    const random4: u32 = (@as(u32, random_bytes[6]) << 24) |
-        (@as(u32, random_bytes[7]) << 16) |
-        (@as(u32, random_bytes[8]) << 8) |
-        @as(u32, random_bytes[9]);
-
-    return UUID{
-        .time_high = time_high,
-        .time_low = time_low,
-        .version_random1 = version_random1,
-        .variant_random2 = variant_random2,
-        .random3 = random3,
-        .random4 = random4,
-    };
-}
-
-fn uuidToString(uuid: UUID) ![]const u8 {
-    var buffer: [36]u8 = undefined;
-    // time_h32-t_16-verh-varh-rand03rand04
-    // 019212d3-87f4-7d25-902e-b8d39fe07f08
-    return std.fmt.bufPrint(&buffer, "{x:08}-{x}-{x}-{x:04}-{x:04}{x:08}", .{ uuid.time_high, uuid.time_low, uuid.version_random1, uuid.variant_random2, uuid.random3, uuid.random4 });
-}

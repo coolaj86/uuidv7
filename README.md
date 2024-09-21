@@ -33,7 +33,7 @@ Compile from source for FreeBSD, OpenBSD, etc.
 3. Place in your `PATH`
 
 ```sh
-b_triplet='x86-linux-musl'
+b_triplet='x86_64-linux-musl'
 curl -L -O https://github.com/coolaj86/zig-uuidv7/releases/download/v1.0.0/uuidv7-v1.0.0-"$b_triplet".tar.gz
 tar xvf uuidv7-v1.0.0-"$b_triplet".tar.gz
 mv uuidv7 ~/bin/

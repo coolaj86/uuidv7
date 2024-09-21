@@ -16,6 +16,7 @@ uuidv7 > uuidv7.txt
 
 # Table of Contents
 
+-   [Install](#install)
 -   [UUIDv7 Spec](#uuidv7-spec)
     -   [By the Characters](#by-the-characters)
     -   [By the Bits](#by-the-bits)

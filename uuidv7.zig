@@ -1,3 +1,6 @@
+// zig 0.14.0-dev.1511+54b668f8a
+// zig build-exe uuidv7.zig  -O ReleaseSmall -femit-bin=uuidv7
+
 const std = @import("std");
 
 pub fn main() !void {

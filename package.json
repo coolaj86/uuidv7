@@ -1,6 +1,6 @@
 {
   "name": "@root/uuidv7",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Radically simple (and efficient) UUIDv7 generation for Browsers, Node, Bun, etc (JavaScript)",
   "main": "uuidv7.js",
   "type": "module",

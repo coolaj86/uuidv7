@@ -21,7 +21,9 @@ uuidv7 > uuidv7.txt
 - [UUIDv7 Spec](#uuidv7-spec)
   - [By the Characters](#by-the-characters)
   - [By the Bits](#by-the-bits)
-- [Zig Build](#build)
+- [Build](#build)
+  - [Go Build (and TinyGo)](#go)
+  - [Zig Build](#zig)
 - [License](#license)
 
 # Install
@@ -136,6 +138,48 @@ There are 36 characters total: 32 hex (`0123456789abcdef`) + 4 dashes (`-`)
   - 62-bit random
 
 # Build
+
+## Go
+
+```sh
+curl https://webi.sh/go | sh
+source ~/.config/envman/PATH.env
+```
+
+For the current platform:
+
+```sh
+go build -o uuidv7 ./cmd/.
+```
+
+For Linux containers:
+
+```sh
+GOOS=linux GOARCH=amd64 GOAMD64=v2 go build -o uuidv7 ./cmd/.
+```
+
+The entire build matrix (into `./dist/`):
+
+```sh
+goreleaser --snapshot --skip=publish --clean
+```
+
+### TinyGo
+
+```sh
+curl https://webi.sh/go | sh
+source ~/.config/envman/PATH.env
+```
+
+```sh
+tinygo build -o uuidv7 ./cmd/.
+```
+
+```sh
+GOOS=linux GOARCH=amd64 GOAMD64=v2 tinygo build -o uuidv7 ./cmd/.
+```
+
+## Zig
 
 See </build.sh>.
 

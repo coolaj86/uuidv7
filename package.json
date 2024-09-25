@@ -7,6 +7,14 @@
   "files": [
     "./uuidv7.js"
   ],
+  "exports": {
+    ".": "./uuidv7.js",
+    "./*": "./*"
+  },
+  "imports": {
+    "@root/uuidv7": "./uuidv7.js",
+    "@root/uuidv7/": "./"
+  },
   "scripts": {
     "test": "node uuidv7-test.js",
     "jshint": "npx -p jshint@2.x -- jshint -c ./.jshintrc ./*.js",

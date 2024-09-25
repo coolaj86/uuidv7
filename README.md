@@ -16,19 +16,20 @@ uuidv7 > uuidv7.txt
 
 # Table of Contents
 
--   [Install](#install)
--   [UUIDv7 Spec](#uuidv7-spec)
-    -   [By the Characters](#by-the-characters)
-    -   [By the Bits](#by-the-bits)
--   [Build](#build)
--   [License](#license)
+- [Install](#install)
+- [UUIDv7 Spec](#uuidv7-spec)
+  - [By the Characters](#by-the-characters)
+  - [By the Bits](#by-the-bits)
+- [Build](#build)
+- [License](#license)
 
 # Install
 
 Pre-built archives available for Mac, Linux, & Widows. \
 Compile from source for FreeBSD, OpenBSD, etc.
 
-1. Download from GitHub Releases: <https://github.com/coolaj86/zig-uuidv7/releases>
+1. Download from GitHub Releases:
+   <https://github.com/coolaj86/zig-uuidv7/releases>
 2. Extract
 3. Place in your `PATH`
 
@@ -50,21 +51,21 @@ There are 36 characters total: 32 hex (`0123456789abcdef`) + 4 dashes (`-`)
 019212d3  -  87f4   -   7d25   -   902e   -   b8d39fe07f08
 ```
 
--   8ch hex time high
--   `-`
--   4ch hex time low
--   `-`
--   4ch hex version + "random a"
-    -   1ch hex version: `7`
-    -   3ch hex "random a"
--   `-`
--   4ch hex variant + "random b"
-    -   1ch hex version: `8`, `9`, `a`, `b`
-    -   3ch hex "random b"
--   `-`
--   12ch hex randam a
-    -   4ch hex random a
-    -   8ch hex random a
+- 8ch hex time high
+- `-`
+- 4ch hex time low
+- `-`
+- 4ch hex version + "random a"
+  - 1ch hex version: `7`
+  - 3ch hex "random a"
+- `-`
+- 4ch hex variant + "random b"
+  - 1ch hex version: `8`, `9`, `a`, `b`
+  - 3ch hex "random b"
+- `-`
+- 12ch hex randam a
+  - 4ch hex random a
+  - 8ch hex random a
 
 ## By the Bits
 
@@ -73,15 +74,15 @@ There are 36 characters total: 32 hex (`0123456789abcdef`) + 4 dashes (`-`)
 019212d3-87f4    -    7d25    -    902e    -    b8d39fe07f08
 ```
 
--   48 bits of timestamp
-    -   32-bit high (minutes to years)
-    -   16-bit low (seconds & milliseconds)
--   16 bits of version + random
-    -   4-bit version (`0b0111`)
-    -   12-bit random
--   64-bits variant + random
-    -   2-bit variant (`0b10`)
-    -   62-bit random
+- 48 bits of timestamp
+  - 32-bit high (minutes to years)
+  - 16-bit low (seconds & milliseconds)
+- 16 bits of version + random
+  - 4-bit version (`0b0111`)
+  - 12-bit random
+- 64-bits variant + random
+  - 2-bit variant (`0b10`)
+  - 62-bit random
 
 # Build
 

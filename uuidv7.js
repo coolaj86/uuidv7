@@ -10,6 +10,7 @@
  */
 
 const UUID_SIZE = 16;
+const WINDOW_SIZE = 10;
 const TIME_SIZE = 6;
 const HEX_RADIX = 16;
 
@@ -17,7 +18,7 @@ let UUIDv7 = {};
 
 UUIDv7._crypto = globalThis.crypto;
 
-UUIDv7._buffer = new Uint8Array(UUID_SIZE * 4); // for efficiency
+UUIDv7._buffer = new Uint8Array(UUID_SIZE * 6); // for efficiency
 UUIDv7._cursor = UUIDv7._buffer.length;
 
 /**
@@ -120,17 +121,20 @@ UUIDv7.setBytesBuffer = function (bytes) {
  * and returns a subarray of the random bytes.
  */
 UUIDv7._nextSubarray = function () {
-  // we advance 10 rather than 16 so that the used random bytes
+  // We advance 10 rather than 16 so that the used random bytes
   // can be overwritten by the time and not waste unused random bytes
   // 1. 6time + 4rand + 6rand
   // 2.                 6time + 4rand + 6rand
   // 3.                                 6time + 4rand + 6rand
-  UUIDv7._cursor += 10;
+  // Note: this means that 10*n + 16 are the most efficient buffer sizes
+  //       such as 16, 96, 176, 256, etc
+  UUIDv7._cursor += WINDOW_SIZE;
 
   let end = UUIDv7._cursor + UUID_SIZE;
   if (end > UUIDv7._buffer.length) {
     UUIDv7._crypto.getRandomValues(UUIDv7._buffer);
     UUIDv7._cursor = 0;
+    end = UUID_SIZE;
   }
 
   let bytes = UUIDv7._buffer.subarray(UUIDv7._cursor, end);

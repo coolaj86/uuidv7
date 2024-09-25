@@ -1,4 +1,4 @@
-# [zig-uuidv7](https://github.com/coolaj86/zig-uuidv7)
+# [uuidv7](https://github.com/coolaj86/uuidv7)
 
 Generate UUID v7 strings, like `019212d3-87f4-7d25-902e-b8d39fe07f08`.
 
@@ -30,13 +30,13 @@ Pre-built archives available for Mac, Linux, & Widows. \
 Compile from source for FreeBSD, OpenBSD, etc.
 
 1. Download from GitHub Releases:
-   <https://github.com/coolaj86/zig-uuidv7/releases>
+   <https://github.com/coolaj86/uuidv7/releases>
 2. Extract
 3. Place in your `PATH`
 
 ```sh
 b_triplet='x86_64-linux-musl'
-curl -L -O https://github.com/coolaj86/zig-uuidv7/releases/download/v1.0.0/uuidv7-v1.0.0-"$b_triplet".tar.gz
+curl -L -O https://github.com/coolaj86/uuidv7/releases/download/v1.0.0/uuidv7-v1.0.0-"$b_triplet".tar.gz
 tar xvf ./uuidv7-v1.0.0-"$b_triplet".tar.gz
 mv ./uuidv7 ~/bin/
 ```

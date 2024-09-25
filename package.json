@@ -28,7 +28,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/coolaj86/polyglot-uuidv7.git"
+    "url": "git+https://github.com/coolaj86/uuidv7.git"
   },
   "keywords": [
     "uuid",
@@ -42,7 +42,7 @@
   "author": "AJ ONeal <aj@therootcompany.com> (https://therootcompany.com/)",
   "license": "SEE LICENSE IN LICENSE",
   "bugs": {
-    "url": "https://github.com/coolaj86/polyglot-uuidv7/issues"
+    "url": "https://github.com/coolaj86/uuidv7/issues"
   },
-  "homepage": "https://github.com/coolaj86/polyglot-uuidv7#readme"
+  "homepage": "https://github.com/coolaj86/uuidv7#readme"
 }

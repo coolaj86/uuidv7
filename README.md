@@ -29,8 +29,7 @@ uuidv7 > uuidv7.txt
 Pre-built archives available for Mac, Linux, & Widows. \
 Compile from source for FreeBSD, OpenBSD, etc.
 
-1. Download from GitHub Releases:
-   <https://github.com/coolaj86/uuidv7/releases>
+1. Download from GitHub Releases: <https://github.com/coolaj86/uuidv7/releases>
 2. Extract
 3. Place in your `PATH`
 
@@ -57,9 +56,6 @@ High-level API:
 ```js
 import UUIDv7 from "@root/uuidv7";
 
-let buffer = new Uint8Array(4096); // optional, if you need lots of UUIDs, and fast
-UUIDv7.setBytesBuffer(buffer);
-
 UUIDv7.uuidv7();
 // 01922aa4-88ad-7cae-a517-a298a491d35c
 
@@ -69,6 +65,11 @@ UUIDv7.uuidv7Bytes();
 ```
 
 Low-level API:
+
+```js
+let buffer = new Uint8Array(4096); // optional, if you need lots of UUIDs, and fast
+UUIDv7.setBytesBuffer(buffer);
+```
 
 ```js
 let now = Date.now();

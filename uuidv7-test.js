@@ -1,4 +1,4 @@
-import UUIDv7 from "./uuidv7.js";
+import UUIDv7 from "@root/uuidv7";
 
 {
   let uuidv7 = UUIDv7.uuidv7();

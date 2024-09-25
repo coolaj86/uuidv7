@@ -23,6 +23,7 @@ uuidv7 > uuidv7.txt
   - [By the Bits](#by-the-bits)
 - [Build](#build)
   - [Go Build (and TinyGo)](#go)
+  - [Swift)](#swift)
   - [Zig Build](#zig)
 - [License](#license)
 
@@ -177,6 +178,14 @@ tinygo build -o uuidv7 ./cmd/.
 
 ```sh
 GOOS=linux GOARCH=amd64 GOAMD64=v2 tinygo build -o uuidv7 ./cmd/.
+```
+
+## Swift
+
+```sh
+swift build --configuration release --show-bin-path
+
+./.build/arm64-apple-macosx/release/uuidv7
 ```
 
 ## Zig

@@ -1,0 +1,40 @@
+{
+  "name": "@root/uuidv7",
+  "version": "1.0.0",
+  "description": "Radically simple (and efficient) UUIDv7 generation for Browsers, Node, Bun, etc (JavaScript)",
+  "main": "uuidv7.js",
+  "type": "module",
+  "files": [
+    "./uuidv7.js"
+  ],
+  "scripts": {
+    "test": "node uuidv7-test.js",
+    "jshint": "npx -p jshint@2.x -- jshint -c ./.jshintrc ./*.js",
+    "lint": "npm run jshint && npm run tsc",
+    "prettier": "npx -p prettier@3.x -- prettier -w '**/*.{js,md}'",
+    "fmt": "npm run prettier",
+    "bump": "npm version -m \"chore(release): bump to v%s\"",
+    "tsc": "npx -p typescript@5.x -- tsc -p ./jsconfig.json",
+    "reexport-types": "npx -p jswt@1.x -- reexport",
+    "prepublish": "npm run reexport-types"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coolaj86/polyglot-uuidv7.git"
+  },
+  "keywords": [
+    "uuid",
+    "uuidv7",
+    "ULID",
+    "Uint8Array",
+    "string",
+    "id",
+    "autoincrement"
+  ],
+  "author": "AJ ONeal <aj@therootcompany.com> (https://therootcompany.com/)",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/coolaj86/polyglot-uuidv7/issues"
+  },
+  "homepage": "https://github.com/coolaj86/polyglot-uuidv7#readme"
+}

@@ -17,10 +17,11 @@ uuidv7 > uuidv7.txt
 # Table of Contents
 
 - [Install](#install)
+- [In JavaScript](#javascript-version)
 - [UUIDv7 Spec](#uuidv7-spec)
   - [By the Characters](#by-the-characters)
   - [By the Bits](#by-the-bits)
-- [Build](#build)
+- [Zig Build](#build)
 - [License](#license)
 
 # Install
@@ -38,6 +39,55 @@ b_triplet='x86_64-linux-musl'
 curl -L -O https://github.com/coolaj86/zig-uuidv7/releases/download/v1.0.0/uuidv7-v1.0.0-"$b_triplet".tar.gz
 tar xvf ./uuidv7-v1.0.0-"$b_triplet".tar.gz
 mv ./uuidv7 ~/bin/
+```
+
+# JavaScript Version
+
+Supports both `import` and `require`.
+
+Extremely simple implementation that can be tuned for speed or memory
+efficiency.
+
+```sh
+npm install --save @root/uuidv7
+```
+
+High-level API:
+
+```js
+import UUIDv7 from "@root/uuidv7";
+
+let buffer = new Uint8Array(4096); // optional, if you need lots of UUIDs, and fast
+UUIDv7.setBytesBuffer(buffer);
+
+UUIDv7.uuidv7();
+// 01922aa4-88ad-7cae-a517-a298a491d35c
+
+UUIDv7.uuidv7Bytes();
+// Uint8Array(16) [ 1, 146,  42, 176, 37, 122, 114, 189
+//                 172, 240,  1, 146, 42, 176,  37, 122 ]
+```
+
+Low-level API:
+
+```js
+let now = Date.now();
+let ms64 = BigInt(now);
+let bytes = new Uint8Array(16);
+let start = 0;
+globalThis.crypto.getRandomValues(bytes);
+
+void UUIDv7.fill(bytes, start, ms64);
+
+console.log(bytes);
+// Uint8Array(16) [ 1, 146,  42, 176, 37, 122, 114, 189
+//                 172, 240,  1, 146, 42, 176,  37, 122 ]
+```
+
+```js
+let uuidv7 = UUIDv7.format(bytes);
+console.log(uuidv7);
+// 01922aa4-88ad-7cae-a517-a298a491d35c
 ```
 
 # UUIDv7 Spec

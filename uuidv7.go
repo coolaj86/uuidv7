@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"sync"
 	"time"
 )
 
@@ -16,6 +17,7 @@ const (
 var (
 	buffer = make([]byte, 96) // 10 uuids before refill
 	cursor = len(buffer)
+	mutex  sync.Mutex
 )
 
 // UUIDv7 in byte form, 16 bytes
@@ -30,6 +32,9 @@ func New() UUIDv7 {
 
 // NewWithTime allows specifying a custom time
 func NewWithTime(ms int64) UUIDv7 {
+	mutex.Lock()
+	defer mutex.Unlock()
+
 	uuid := nextSubarray()
 
 	ms64 := ms
@@ -82,6 +87,9 @@ func Format(bytes []byte) string {
 
 // SetBuffer changes the buffer to one of the size of your choosing
 func SetBuffer(bytes []byte) error {
+	mutex.Lock()
+	defer mutex.Unlock()
+
 	if len(bytes) < UUIDSize {
 		return errors.New(fmt.Sprintf("minimum UUIDv7 buffer size is %d bytes", UUIDSize))
 	}

@@ -10,9 +10,11 @@ import (
 func TestUUIDv7(t *testing.T) {
 	// Test printing 10 UUIDv7 strings
 	t.Run("Print 10 UUIDv7 strings", func(t *testing.T) {
-		for i := 0; i < 10; i++ {
-			uuid := uuidv7.New()
-			fmt.Println(uuid.String())
+		for i := 0; i < 1000; i++ {
+			go func() {
+				uuid := uuidv7.New()
+				fmt.Println(uuid.String())
+			}()
 		}
 	})
 

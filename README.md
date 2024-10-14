@@ -23,7 +23,7 @@ uuidv7 > uuidv7.txt
   - [By the Bits](#by-the-bits)
 - [Build](#build)
   - [Go Build (and TinyGo)](#go)
-  - [Swift)](#swift)
+  - [Swift](#swift)
   - [Zig Build](#zig)
 - [License](#license)
 

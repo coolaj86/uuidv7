@@ -123,6 +123,9 @@ There are 36 characters total: 32 hex (`0123456789abcdef`) + 4 dashes (`-`)
 
 ## By the Bits
 
+There are 128 bits total: \
+48 time and 80 random, with 4 version and 2 variant bits substituted
+
 ```text
    48 time         4ver, 12ra   2var, 14rb        random b
 019212d3-87f4    -    7d25    -    902e    -    b8d39fe07f08

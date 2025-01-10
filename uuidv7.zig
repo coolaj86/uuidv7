@@ -5,11 +5,74 @@
 
 const std = @import("std");
 
+const version = "v1.0.2"; // git describe --tags
+const date = "2025-01-09T20:47:02-0700"; // date +%Y-%m-%dT%H:%M:%S%z
+
+fn showVersion(printer: anytype) !void {
+    try printer.print("uuidv7 {s} ({s})\n", .{ version, date });
+}
+
+fn showHelp(printer: anytype) !void {
+    try showVersion(printer);
+    try printer.print(
+        \\USAGE
+        \\    uuidv7 [OPTIONS]
+        \\EXAMPLE
+        \\    uuidv7
+        \\    uuidv7 -c 10
+        \\
+        \\FLAGS
+        \\    -V, --version    outputs version
+        \\    --help           show this help message
+        \\
+        \\    -c, --count <n>  generate `n` uuids
+        \\
+    ,
+        .{},
+    );
+}
+
 pub fn main() !void {
+    const args = try std.process.argsAlloc(std.heap.page_allocator);
+    defer std.heap.page_allocator.free(args);
+
     const stdout = std.io.getStdOut().writer();
-    const uuid7 = try UUID7.generate();
-    const uuid7str = uuid7.toString();
-    try stdout.print("{s}\n", .{uuid7str});
+
+    var count: usize = 1;
+    if (args.len > 1) {
+        const flag = args[1];
+        if (std.mem.eql(u8, flag, "-V") or std.mem.eql(u8, flag, "--version") or std.mem.eql(u8, flag, "version")) {
+            try showVersion(stdout);
+            return;
+        } else if (std.mem.eql(u8, flag, "--help") or std.mem.eql(u8, flag, "help")) {
+            try showHelp(stdout);
+            return;
+        } else if (std.mem.eql(u8, flag, "-c") or std.mem.eql(u8, flag, "--count")) {
+            if (args.len > 3) {
+                const arg = args[3];
+                std.debug.print("unrecognized argument: '{s}'\n", .{arg});
+                return error.InvalidArgument;
+            }
+
+            const num_str = args[2];
+            count = std.fmt.parseInt(usize, num_str, 10) catch {
+                try stdout.print("could not parse argument as positive integer: '{any}'\n", .{num_str});
+                std.process.exit(1);
+                return;
+            };
+        } else {
+            std.debug.print("unrecognized flag: {s}\n\n", .{flag});
+            const stderr = std.io.getStdErr().writer();
+            try showHelp(stderr);
+            return;
+        }
+    }
+
+    for (0..count) |_| {
+        const uuid7 = try UUID7.generate();
+        const uuid7str = uuid7.toString();
+        try stdout.print("{s}\n", .{uuid7str});
+    }
 }
 
 pub const UUID7 = packed struct(u128) {
